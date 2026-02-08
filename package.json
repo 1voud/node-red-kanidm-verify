@@ -1,0 +1,43 @@
+{
+  "name": "@1voud/node-red-kanidm-verify",
+  "version": "1.0.0",
+  "description": "A Node-RED node to verify JWTs from Kanidm using jose.",
+  "homepage": "http://github.com/1voud/node-red-kanidm-verify",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1voud/node-red-kanidm-verify.git"
+  },
+  "main": "kanidm-verify.js",
+  "scripts": {
+    "test": "mocha \"test/*_spec.js\""
+  },
+  "keywords": [
+    "node-red",
+    "kanidm",
+    "jwt",
+    "verify",
+    "jose",
+    "auth",
+    "openid"
+  ],
+  "node-red": {
+    "version": ">=2.0.0",
+    "nodes": {
+      "kanidm-verify": "kanidm-verify.js"
+    }
+  },
+  "author": "Johan",
+  "license": "ISC",
+  "engines": {
+    "node": ">=10"
+  },
+  "dependencies": {
+    "jose": "^4.14.4"
+  },
+  "devDependencies": {
+    "mocha": "^10.2.0",
+    "nock": "^14.0.10",
+    "node-red": "^3.1.15",
+    "node-red-node-test-helper": "^0.3.0"
+  }
+}

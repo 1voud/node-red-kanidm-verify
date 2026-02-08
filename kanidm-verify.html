@@ -1,0 +1,66 @@
+<script type="text/javascript">
+    RED.nodes.registerType('kanidm-verify', {
+        category: 'function',
+        color: '#de9866',
+        defaults: {
+            name: { value: "" },
+            infoUrl: { value: "", required: true },
+            audience: { value: "", required: true }
+        },
+        inputs: 1,
+        outputs: 2,
+        icon: "icons/openid.svg",
+        label: function () {
+            return this.name || "kanidm-verify";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="kanidm-verify">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-infoUrl"><i class="fa fa-globe"></i> Info URL</label>
+        <input type="text" id="node-input-infoUrl" placeholder="https://idm.example.com/oauth2/openid/client_id/.well-known/openid-configuration">
+    </div>
+    <div class="form-row">
+        <label for="node-input-audience"><i class="fa fa-id-card-o"></i> Audience</label>
+        <input type="text" id="node-input-audience" placeholder="Client ID">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="kanidm-verify">
+    <p>A simple node that verifies a JWT from Kanidm using <code>jose</code> library.</p>
+    
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">string</span>
+        </dt>
+        <dd> The input message can contain the token in the <code>Authorization</code> header (Bearer token).</dd>
+    </dl>
+    
+    <h3>Outputs</h3>
+    <ol class="node-ports">
+        <li>Success
+            <dl class="message-properties">
+                <dt>token <span class="property-type">object</span></dt>
+                <dd>The decoded and verified token payload.</dd>
+            </dl>
+        </li>
+        <li>Failure
+            <dl class="message-properties">
+                <dt>error <span class="property-type">object</span></dt>
+                <dd>Error details if verification failed.</dd>
+            </dl>
+        </li>
+    </ol>
+    
+    <h3>Details</h3>
+    <p>This node verifies a JWT signed with ES256 algorithm.</p>
+    <p>It fetches the JWKS from the configured Kanidm instance (inferred from the Info URL or provided directly if the Info URL points to JWKS).</p>
+    <p>If valid, `msg.token` is set to the decoded payload and the message is forwarded to the first output.</p>
+    <p>If invalid, the node sends the message to the second output with an error message.</p>
+</script>
