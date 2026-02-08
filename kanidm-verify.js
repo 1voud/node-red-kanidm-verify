@@ -21,6 +21,7 @@ module.exports = function (RED) {
                     return data.jwks_uri;
                 } catch (err) {
                     node.error("Could not fetch OIDC configuration: " + err.message);
+                    node.status({ fill: 'red', shape: 'ring', text: 'invalid-oidc-config' })
                     return null;
                 }
             }
@@ -32,6 +33,7 @@ module.exports = function (RED) {
             if (resolvedUrl) {
                 JWKS = jose.createRemoteJWKSet(new URL(resolvedUrl));
                 ready = true;
+                node.status({ fill: 'blue', shape: 'ring', text: 'initialized' })
                 node.log("Kanidm Verify Node initialized with JWKS URL: " + resolvedUrl);
             }
         })();
@@ -39,6 +41,7 @@ module.exports = function (RED) {
 
         node.on('input', async function (msg) {
             if (!ready) {
+                node.status({ fill: 'red', shape: 'ring', text: 'not-initialized' })
                 node.error("Node not initialized (JWKS URL not resolved yet)", msg);
                 return;
             }
@@ -59,7 +62,8 @@ module.exports = function (RED) {
             }
 
             if (!token) {
-                msg.error = { message: "No token found in Bearer header", code: "NO_TOKEN" };
+                msg.error = { message: "No token found in Bearer header", code: "MISSING_TOKEN" };
+                node.status({ fill: 'red', shape: 'ring', text: 'missing-token' })
                 node.send([null, msg]);
                 return;
             }
@@ -75,9 +79,11 @@ module.exports = function (RED) {
                 const { payload, protectedHeader } = await jose.jwtVerify(token, JWKS, options);
 
                 msg.token = payload;
+                node.status({ fill: 'green', shape: 'ring', text: 'verified' })
                 node.send([msg, null]);
             } catch (err) {
-                msg.error = { message: "JWT Verification failed: " + err.message, code: "VERIFICATION_FAILED" };
+                msg.error = { message: "JWT Verification failed: " + err.message, code: "VERIFY_FAILED" };
+                node.status({ fill: 'red', shape: 'ring', text: 'verify-failed' })
                 node.send([null, msg]);
             }
         });
