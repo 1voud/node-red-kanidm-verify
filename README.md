@@ -18,13 +18,12 @@ Supports:
 ### Messages
 Input message (Bearer token in header):
 
-    {
-        "req": {
-            "headers": {
-                "authorization": "Bearer <your_jwt_token>"
-            }
+    "msg.req": {
+        "headers": {
+            "authorization": "Bearer <your_jwt_token>"
         }
     }
+
 
 ### Outputs
 **Success Output (1)**:
@@ -52,5 +51,4 @@ Error details if verification fails.
 
 Releases:
 - v1.0.0 - Initial release
-    - ES256 Verification
     - Dual outputs for Success/Failure
