@@ -1,11 +1,11 @@
 {
   "name": "@1voud/node-red-kanidm-verify",
-  "version": "v0.0.5",
+  "version": "0.0.5",
   "description": "A Node-RED node to verify JWTs from Kanidm using jose.",
   "homepage": "http://github.com/1voud/node-red-kanidm-verify",
   "repository": {
     "type": "git",
-    "url": "https://github.com/1voud/node-red-kanidm-verify.git"
+    "url": "git+https://github.com/1voud/node-red-kanidm-verify.git"
   },
   "main": "kanidm-verify.js",
   "scripts": {
